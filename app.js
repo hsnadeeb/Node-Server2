@@ -3,7 +3,8 @@
 const express = require('express');
 const bodyParser=require('body-parser');
 const app=express();
-
+const apdminRoutes=require('./routes/admin');
+const shopRoutes=require('./routes/shop');
 app.use(bodyParser.urlencoded({extended:false}));
 
 // app.use('/',(req,res,next)=>{
@@ -12,22 +13,13 @@ app.use(bodyParser.urlencoded({extended:false}));
 //     next();
 // });
 
-app.use('/add-product',(req,res,next)=>{
+app.use('/admin',apdminRoutes);
+app.use(apdminRoutes);
+app.use(shopRoutes);
 
-    // console.log("in the next middelware");
-    res.send('<form action="/product" method="POST"><input type="text" name="title"><input type="number" name="size"><button type="submit">Add Product</button></form>')
-});
- app.post('/product',(req,res,next)=>{
-    console.log(req.body);
-    res.redirect('/');
-
- })
-
-app.use('/',(req,res,next)=>{
-
-    // console.log("in the next middelware");
-    res.send('<h1>Middleware Page</h1>')
-});
+app.use((req,res,next)=>{
+    res.status(404).send('<h1>Page not found</h1>');
+})
 
 // const server = http.createServer(app);
 // server.listen(3000);
